@@ -1,0 +1,14 @@
+# Local dependencies
+node_modules/
+
+# Build and test output
+dist/
+coverage/
+
+# Local environment files
+.env.local
+.env.*.local
+
+# Git metadata and macOS files
+.git
+**/.DS_Store
