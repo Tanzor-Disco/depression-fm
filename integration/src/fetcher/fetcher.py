@@ -7,6 +7,7 @@ import httpx
 
 logger = getLogger(__name__)
 
+
 @dataclass
 class SongEntry:
     spotify_id: str
@@ -16,13 +17,13 @@ class SongEntry:
     spotify_url: str
 
 
-def get_spotify_id(spotify_link: str) -> str|None:
+def get_spotify_id(spotify_link: str) -> str | None:
     parts = spotify_link.split("/")
     try:
         id_and_param = parts[4]
         id = id_and_param.split("?")[0]
     except IndexError:
-        logger.exception("invalid spotify_link encountered: %s",spotify_link)
+        logger.exception("invalid spotify_link encountered: %s", spotify_link)
         return None
     return id
 
@@ -35,7 +36,7 @@ def create_entries(song_dicts: list[dict[str, str]]) -> list[SongEntry]:
             continue
 
         entry = SongEntry(
-            spotify_id = spotify_id,
+            spotify_id=spotify_id,
             title=song_dict["title"],
             artist=song_dict["artist"],
             image_url=song_dict["image_url"],

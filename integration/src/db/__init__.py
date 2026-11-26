@@ -1,2 +1,1 @@
-from .db import Database
-from .db import SongEntry
+from .db import Database, SongEntry

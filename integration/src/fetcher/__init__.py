@@ -1,2 +1,1 @@
-from .fetcher import Fetcher
-from .fetcher import SongEntry
+from .fetcher import Fetcher, SongEntry
