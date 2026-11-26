@@ -1,0 +1,7 @@
+from src.fetcher import SongEntry
+
+class ModelAPI:
+    def __init__(self,api_key:str):
+        self.api_key = api_key
+
+
