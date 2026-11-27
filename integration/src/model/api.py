@@ -63,9 +63,15 @@ class ModelAPI:
 
         return parsed.songs
 
-    async def process_changed_songs(self, songs: list[ChangedSong]) -> list[SongUpdate]:
+    async def process_changed_songs(
+        self, songs: list[ChangedSong]
+    ) -> dict[SongState, list[SongUpdate]]:
         need_description = []
-        updates: list[SongUpdate] = []
+        updates: dict[SongState, list[SongUpdate]] = {
+            SongState.Added: [],
+            SongState.Modified: [],
+            SongState.Deleted: [],
+        }
 
         for song in songs:
             if song.needs_description:
@@ -80,8 +86,9 @@ class ModelAPI:
                 spotify_url=song.spotify_url,
                 description=None,
             )
-            updates.append(update)
+            updates[update.state].append(update)
 
         processed = await self._get_description_for_songs(need_description)
-        updates.extend(processed)
+        for song in processed:
+            updates[song.state].append(song)
         return updates

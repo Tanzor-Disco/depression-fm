@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from src.db import SongEntry as DBSongEntry
 from src.fetcher import SongEntry
+from src.utils.models.song_entry import SongEntry as DBSongEntry
 
 
 class SongState(StrEnum):
