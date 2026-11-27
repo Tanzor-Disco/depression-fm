@@ -1,0 +1,256 @@
+.song-card {
+  max-width: 380px;
+  padding-top: 3px;
+  margin-inline: auto;
+}
+.song-card__eyebrow {
+  font-family: var(--mono);
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  font-size: 12px;
+}
+.song-card__eyebrow svg {
+  flex: none;
+}
+.record-object {
+  position: relative;
+  width: calc(100% - 48px);
+  aspect-ratio: 1;
+  margin-bottom: 32px;
+  transition: opacity 220ms ease;
+}
+.vinyl {
+  position: absolute;
+  top: 5%;
+  left: 27%;
+  height: 90%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at center,
+    #272724 0px,
+    #272724 1px,
+    #353531 2px,
+    #262623 3px,
+    #262623 5px
+  );
+  box-shadow: 2px 6px 14px #2929251a;
+  transform: rotate(-18deg);
+}
+.vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 110deg,
+    transparent,
+    #ffffff18 14%,
+    transparent 27%,
+    transparent 48%,
+    #ffffff12 65%,
+    transparent 80%
+  );
+}
+.vinyl__label {
+  position: absolute;
+  inset: 34%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 50%;
+  background: #a4a49a;
+  color: #282823;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.vinyl__label i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--paper);
+}
+.vinyl__label small {
+  font-size: 7px;
+}
+.record-sleeve {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  background: #d6d6cf;
+  transform: rotate(-4deg);
+  box-shadow:
+    -2px 3px 3px #33332b0d,
+    0 17px 30px #30302721;
+  transition: transform 400ms ease;
+}
+.record-object:hover .record-sleeve {
+  transform: rotate(-1deg);
+}
+.record-sleeve--cover {
+  padding: 0;
+}
+.record-sleeve > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.sleeve-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 23px;
+  background:
+    linear-gradient(180deg, #d8d8d3a6, #d8d8d300 60%),
+    url("../../../assets/industrial-city.webp") center / cover;
+}
+.sleeve-art__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+.sleeve-art__heading span + span {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+.sleeve-art__mark {
+  margin-top: auto;
+  font-family: Georgia, serif;
+  font-size: 62px;
+  font-style: italic;
+  line-height: 0.9;
+  color: #e9e9e3;
+}
+.sleeve-art__footer {
+  font-family: var(--mono);
+  line-height: 1.6;
+  margin-top: 12px;
+  font-size: 9px;
+  color: #f0f0eb;
+}
+.song-card--loading .record-object,
+.song-card--loading .song-card__details {
+  opacity: 0.5;
+}
+.song-card__details {
+  position: relative;
+  animation: appear 400ms ease both;
+  transition: opacity 220ms ease;
+  overflow-wrap: anywhere;
+}
+.song-card__artist {
+  font-family: var(--mono);
+  line-height: 1.6;
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.song-card__title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+.song-card__description {
+  margin: 16px 0 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #52524b;
+}
+.spotify-link {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 15px;
+  font-size: 14px;
+  text-underline-offset: 4px;
+  text-decoration-color: #88887e;
+  transition: color 180ms ease;
+}
+.spotify-link:hover {
+  color: var(--accent);
+}
+.song-card__invitation {
+  text-align: center;
+  padding-top: 9px;
+}
+.invitation-line {
+  display: block;
+  width: 24px;
+  height: 1px;
+  margin: 0 auto 20px;
+  background: #8b8b81;
+}
+.song-card__invitation p {
+  margin: 0 0 8px;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 20px;
+}
+.song-card__invitation > span:last-child {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.spinning {
+  animation: spin 3s linear infinite;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 1100px) {
+  .song-card__eyebrow {
+    font-size: 11px;
+  }
+  .record-object {
+    width: calc(100% - 36px);
+  }
+}
+@media (max-width: 800px) {
+  .song-card {
+    width: 100%;
+    max-width: none;
+  }
+  .song-card__eyebrow {
+    font-size: 12px;
+    margin-bottom: 28px;
+  }
+  .record-object {
+    width: calc(100% - 48px);
+  }
+}
+@media (max-width: 440px) {
+  .song-card__title {
+    font-size: 28px;
+  }
+}

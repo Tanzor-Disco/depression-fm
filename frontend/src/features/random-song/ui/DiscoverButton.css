@@ -1,0 +1,44 @@
+.discover-button {
+  width: 100%;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 22px;
+  color: #f0f0eb;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+.discover-button:hover:enabled {
+  background: #41413b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px #2424201a;
+}
+.discover-button:active:enabled {
+  transform: translateY(0);
+}
+.discover-button:disabled {
+  background: #52524b;
+  border-color: #52524b;
+}
+.searching {
+  animation: searching 1.4s ease-in-out infinite;
+}
+@keyframes searching {
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (max-width: 440px) {
+  .discover-button {
+    min-height: 60px;
+  }
+}
