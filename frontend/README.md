@@ -1,76 +1,52 @@
-# React + TypeScript + Vite
+# depression-fm — frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite + TypeScript. Один экран: нажать кнопку, получить случайный трек с обложкой и описанием, при желании открыть его в Spotify. Первый запрос выполняется только по нажатию кнопки.
 
-Currently, two official plugins are available:
+## Разработка
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Открой адрес, который напечатает Vite (обычно http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x"
-import reactDom from "eslint-plugin-react-dom"
+Фронтенд использует существующий `GET /api/songs/random`. Vite проксирует `/api` на `http://localhost:8080`. Если бэкенд запущен по другому адресу, скопируй `.env.example` в `.env.local` и задай `API_PROXY_TARGET`. Для отдельного API-домена можно задать `VITE_API_BASE_URL`; в этом случае на API нужен CORS. Не помещай секреты в переменные `VITE_*`: они попадают в браузерную сборку.
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Бэкенд, база и интеграция запускаются отдельно. Изменений в них не требуется. При работе через существующий Docker Compose запросы `/api` обрабатывает nginx.
+
+## Структура
+
+```text
+src/
+  app/                         # точка сборки приложения, глобальные стили
+  pages/radio/                 # композиция единственного экрана
+  features/random-song/
+    api/                       # получение случайного трека
+    model/                     # состояние запроса, отмена, защита от повторных кликов
+    ui/                        # кнопка поиска
+  entities/song/
+    model/                     # тип Song и проверка ответа API
+    ui/                        # обложка и карточка трека
+  shared/
+    api/                       # HTTP, таймаут, типы ошибок
+    ui/                        # общие иконки
+  assets/                      # локальные изображения
 ```
+
+Ответ API проверяется до отображения. Ошибки соединения, таймаут, пустая коллекция и некорректный ответ имеют отдельные состояния с повторной попыткой. Предыдущий трек сохраняется при ошибке следующего запроса. Если обложка не загрузилась, остаётся оформленный конверт. Выбор случайного трека полностью остаётся за бэкендом; повторение песни возможно.
+
+## Проверка
+
+```sh
+npm run build
+npm run format:check
+npx playwright install chromium
+npm test
+```
+
+Playwright сам запускает Vite. Тесты подменяют только HTTP-ответ API в браузере; для них не нужны база, Spotify или работающий бэкенд. Проверяются кнопка, повторные запросы, загрузка, ошибки и восстановление, таймаут, запасная обложка, клавиатурная навигация и ширины 320–1440 px. Скриншоты начального экрана и результата сохраняются в `test-results/`.
+
+## Дизайн
+
+Визуальная опора — настроение обложки «Прости меня моя любовь»: промышленный город в дымке, монохром, плёночное зерно и сдержанная типографика. Фоновый городской кадр создан отдельно; оригинальная обложка альбома не используется как фон. Изображение и его исходный промпт описаны в `src/assets/README.md`.
